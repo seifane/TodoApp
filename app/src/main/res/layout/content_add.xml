@@ -40,8 +40,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:met_floatingLabel="highlight"
             app:met_baseColor="@color/mdtp_white"
-
-            app:met_maxCharacters="30"
             app:met_primaryColor="?colorAccent"
             app:met_singleLineEllipsis="true"
             app:met_textColor="?android:attr/textColorPrimaryInverse"
@@ -70,15 +68,15 @@
 
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/time_edit"
-            android:layout_width="140dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             android:hint="@string/hint_time"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title_edit"
-            app:met_floatingLabel="highlight"
             app:met_baseColor="@color/mdtp_white"
+            app:met_floatingLabel="highlight"
             app:met_primaryColor="?colorAccent"
             app:met_singleLineEllipsis="true"
             app:met_textColor="?android:attr/textColorPrimaryInverse"

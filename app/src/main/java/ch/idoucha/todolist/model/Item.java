@@ -1,30 +1,45 @@
 package ch.idoucha.todolist.model;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+
 import com.github.thunder413.datetimeutils.DateTimeStyle;
 import com.github.thunder413.datetimeutils.DateTimeUtils;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
+import ch.idoucha.todolist.notification.NotificationBroadcastReceiver;
 import ninja.sakib.pultusorm.annotations.AutoIncrement;
 import ninja.sakib.pultusorm.annotations.PrimaryKey;
+
+import static android.content.Context.ALARM_SERVICE;
 
 /**
  * Created by Seïfane Idouchach on 1/29/2018.
  */
 
 public class Item {
+
+    public static final int STATE_ACTIVE = 0;
+    public static final int STATE_DONE = 1;
+
     @PrimaryKey
     @AutoIncrement
     public int id;
     public String title;
     public String content;
-    public boolean isDone;
+    public int status;
     public long date;
 
     public Item(String title, String content) {
         this.title = title;
         this.content = content;
-        this.isDone = false;
+        this.status = STATE_ACTIVE;
         this.date = 0;
     }
 
@@ -32,14 +47,14 @@ public class Item {
         this.title = title;
         this.content = content;
         this.date = date;
-        this.isDone = false;
+        this.status = STATE_ACTIVE;
     }
 
     public Item() {
         this.title = "";
         this.content = "";
         this.date = 0;
-        this.isDone = false;
+        this.status = STATE_ACTIVE;
     }
 
     public int getId() {
@@ -66,12 +81,12 @@ public class Item {
         this.content = content;
     }
 
-    public boolean isDone() {
-        return isDone;
+    public int getStatus() {
+        return status;
     }
 
-    public void setDone(boolean done) {
-        isDone = done;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public String getDateString() {
@@ -83,7 +98,10 @@ public class Item {
     public String getTimeString() {
         if (date == 0)
             return "";
-        return DateTimeUtils.formatTime(new Date(), true);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date(date));
+        cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) + 1);
+        return DateTimeUtils.formatWithPattern(cal.getTime(), "HH:mm");
     }
 
     public String getDateTimeString() {
@@ -102,5 +120,16 @@ public class Item {
 
     public void setDate(long date) {
         this.date = date;
+    }
+
+    public void schedule(Context context) {
+        if (date == 0)
+            return;
+        Intent intent = new Intent(context, NotificationBroadcastReceiver.class);
+        intent.putExtra("ID", this.id);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, new Random().nextInt(), intent, 0);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+        Log.d("DEBUG", "current = " + System.currentTimeMillis() + " date = " + date );
+        alarmManager.set(AlarmManager.RTC_WAKEUP, date, pendingIntent);
     }
 }

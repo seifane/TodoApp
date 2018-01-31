@@ -18,6 +18,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ch.idoucha.todolist.helper.DbHelper;
 import ch.idoucha.todolist.model.Item;
 import ninja.sakib.pultusorm.core.PultusORM;
 import ninja.sakib.pultusorm.core.PultusORMCondition;
@@ -25,7 +26,7 @@ import ninja.sakib.pultusorm.core.PultusORMQuery;
 
 public class MainActivity extends AppCompatActivity {
 
-    private PultusORM orm;
+    private DbHelper mHelper;
 
     private HomeListAdapter mAdapter;
 
@@ -42,9 +43,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        String appPath = getApplicationContext().getFilesDir().getAbsolutePath();
-        Log.d("DEBUG", appPath);
-        orm = new PultusORM("todos.db", appPath);
+        mHelper = new DbHelper(getApplicationContext());
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,15 +64,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        PultusORMCondition condition = new PultusORMCondition.Builder()
-                .sort("id", PultusORMQuery.Sort.DESCENDING)
-                .build();
-        List<Object> tmp = orm.find(new Item(), condition);
-        List<Item> items = new ArrayList<>();
-        for (Object o : tmp) {
-            items.add((Item) o);
-        }
-        mAdapter.setList(items);
+        mAdapter.setList(mHelper.getAllItems());
     }
 
     @Override
