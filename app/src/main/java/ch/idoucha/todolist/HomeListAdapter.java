@@ -48,6 +48,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
             public void onClick(View v) {
                 Intent i = new Intent(mContext, AddActivity.class);
                 i.putExtra("ID", item.getId());
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(i);
             }
         });

@@ -127,7 +127,9 @@ public class Item {
             return;
         Intent intent = new Intent(context, NotificationBroadcastReceiver.class);
         intent.putExtra("ID", this.id);
+
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, new Random().nextInt(), intent, 0);
+
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         Log.d("DEBUG", "current = " + System.currentTimeMillis() + " date = " + date );
         alarmManager.set(AlarmManager.RTC_WAKEUP, date, pendingIntent);

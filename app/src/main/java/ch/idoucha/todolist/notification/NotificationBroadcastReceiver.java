@@ -27,7 +27,6 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
     public static final String NOTIFICATION_CHANNEL_ID = "NotificationIDCHANNEL";
     public static final String NOTIFICATION_CHANNEL_NAME = "NotificationCHANNEL";
 
-
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.hasExtra("ID")) {
@@ -38,6 +37,10 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
             Item item = helper.getItemById(id);
             setNotificationChannel(context);
             if (item != null) {
+                if (item.getDate() > System.currentTimeMillis())
+                    return;
+                if (item.getStatus() != Item.STATE_ACTIVE)
+                    return;
                 Log.d("DEBUG", "ONRECEIVE NTF");
                 NotificationCompat.Builder mBuilder =
                         new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
@@ -50,11 +53,7 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
                 TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
                 stackBuilder.addParentStack(MainActivity.class);
                 stackBuilder.addNextIntent(resultIntent);
-                PendingIntent resultPendingIntent =
-                        stackBuilder.getPendingIntent(
-                                0,
-                                PendingIntent.FLAG_UPDATE_CURRENT
-                        );
+                PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
                 mBuilder.setContentIntent(resultPendingIntent);
 
                 NotificationManager mNotificationManager =

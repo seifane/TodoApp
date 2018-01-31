@@ -1,6 +1,5 @@
 package ch.idoucha.todolist;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,12 +8,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.github.thunder413.datetimeutils.DateTimeStyle;
 import com.github.thunder413.datetimeutils.DateTimeUtils;
@@ -23,7 +20,6 @@ import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.TimeZone;
 
 import butterknife.BindView;
@@ -31,9 +27,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.idoucha.todolist.helper.DbHelper;
 import ch.idoucha.todolist.model.Item;
-import ninja.sakib.pultusorm.core.PultusORM;
-import ninja.sakib.pultusorm.core.PultusORMCondition;
-import ninja.sakib.pultusorm.core.PultusORMUpdater;
 
 public class AddActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener{
 
@@ -95,8 +88,8 @@ public class AddActivity extends AppCompatActivity implements TimePickerDialog.O
 
     private void doRemove() {
         new AlertDialog.Builder(this)
-                .setTitle("Delete")
-                .setMessage("Do you really want to delete this note ?")
+                .setTitle(getString(R.string.action_delete))
+                .setMessage(getString(R.string.action_delete_prompt))
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if (isEditing)
@@ -135,11 +128,9 @@ public class AddActivity extends AppCompatActivity implements TimePickerDialog.O
     @Override
     public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
         isTimeSet = true;
-        Log.d("DEBUG", "hour = " + hourOfDay);
         this.hour = hourOfDay;
         this.minute = minute;
         this.second = second;
-        //Log.d("DEBUG", "");
         Calendar cal = Calendar.getInstance();
         cal.setTimeZone(TimeZone.getDefault());
         cal.set(Calendar.HOUR_OF_DAY, this.hour + TimeZone.getDefault().getRawOffset()/(60 * 60 * 1000));
@@ -207,7 +198,7 @@ public class AddActivity extends AppCompatActivity implements TimePickerDialog.O
             if (epochDate > 0) {
                 currentItem.setDate(epochDate);
             }
-            mHelper.updateItem(currentItem);
+            mHelper.updateItem(getApplicationContext(), currentItem);
         } else {
             if (epochDate > 0) {
                 item = new Item(mEditTitle.getText().toString(), mEditContent.getText().toString(), epochDate);

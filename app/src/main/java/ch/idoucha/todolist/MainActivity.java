@@ -1,8 +1,10 @@
 package ch.idoucha.todolist;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -77,7 +79,16 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_flush) {
+            new AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.action_flush))
+                    .setMessage(getString(R.string.action_flush_prompt))
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            mHelper.dropItem();
+                            mAdapter.setList(mHelper.getAllItems());
+                        }})
+                    .setNegativeButton(android.R.string.no, null).show();
             return true;
         }
 
