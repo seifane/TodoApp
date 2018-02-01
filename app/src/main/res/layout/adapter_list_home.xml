@@ -49,7 +49,7 @@
                 android:scrollHorizontally="true"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="TextView"
+                android:text="Content ..."
                 card_view:layout_constraintEnd_toStartOf="@+id/date_text"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toBottomOf="@+id/title_text" />
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="8dp"
-                android:text="TextView"
+                android:text="Date ..."
                 card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintTop_toBottomOf="@+id/title_text" />
 

@@ -73,10 +73,10 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mTitle = (TextView) itemView.findViewById(R.id.title_text);
-            mContent = (TextView) itemView.findViewById(R.id.content_text);
-            mDate = (TextView) itemView.findViewById(R.id.date_text);
-            mCard = (CardView) itemView.findViewById(R.id.card_view);
+            mTitle = itemView.findViewById(R.id.title_text);
+            mContent = itemView.findViewById(R.id.content_text);
+            mDate = itemView.findViewById(R.id.date_text);
+            mCard = itemView.findViewById(R.id.card_view);
         }
     }
 

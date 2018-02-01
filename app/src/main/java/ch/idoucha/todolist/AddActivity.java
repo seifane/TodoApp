@@ -51,10 +51,10 @@ public class AddActivity extends AppCompatActivity implements TimePickerDialog.O
     @BindView(R.id.add_note_layout)
     ConstraintLayout mLayout;
 
-    int year, month, day, hour, minute, second;
-    boolean isDateSet = false, isTimeSet = false, isEditing = false;
-    int currentId = -1;
-    Item currentItem = null;
+    private int year, month, day, hour, minute, second;
+    private boolean isDateSet = false, isTimeSet = false, isEditing = false;
+    private int currentId = -1;
+    private Item currentItem = null;
     private IconSwitch mSwitch;
 
     @Override
