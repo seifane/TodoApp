@@ -73,7 +73,8 @@ public class DbHelper {
         mOrm.update(new Item(), updater, new Callback() {
             @Override
             public void onSuccess(PultusORMQuery.Type type) {
-                item.schedule(context);
+                if (item.getStatus() == Item.STATE_ACTIVE)
+                    item.schedule(context);
             }
 
             @Override

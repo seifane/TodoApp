@@ -29,8 +29,10 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        int notificationId = new Random().nextInt();
+
         if (intent.hasExtra("ID")) {
-            Log.d("DEBUG", "ONRECEIVE");
             int id = intent.getIntExtra("ID", 0);
             DbHelper helper = new DbHelper(context);
 
@@ -41,10 +43,16 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
                     return;
                 if (item.getStatus() != Item.STATE_ACTIVE)
                     return;
-                Log.d("DEBUG", "ONRECEIVE NTF");
+
+                Intent intentWithData = new Intent(context, SetDoneReceiver.class);
+                intentWithData.putExtra("ID", id);
+                intentWithData.putExtra("notifID", notificationId);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, new Random().nextInt(), intentWithData, 0);
+
                 NotificationCompat.Builder mBuilder =
                         new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
                                 .setSmallIcon(R.drawable.ic_alarm_on_white_18dp)
+                                .addAction(R.drawable.ic_done_white_24dp, context.getString(R.string.notification_set_done), pendingIntent) // #0
                                 .setContentTitle("Reminder : " + item.getTitle())
                                 .setContentText(item.getContent());
 
@@ -59,7 +67,7 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
                 NotificationManager mNotificationManager =
                         (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-                mNotificationManager.notify(new Random().nextInt(), mBuilder.build());
+                mNotificationManager.notify(notificationId, mBuilder.build());
             }
         }
     }

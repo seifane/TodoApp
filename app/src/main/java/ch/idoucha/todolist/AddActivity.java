@@ -7,11 +7,14 @@ import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 
 import com.github.thunder413.datetimeutils.DateTimeStyle;
 import com.github.thunder413.datetimeutils.DateTimeUtils;
@@ -51,6 +54,7 @@ public class AddActivity extends AppCompatActivity implements TimePickerDialog.O
     boolean isDateSet = false, isTimeSet = false, isEditing = false;
     int currentId = -1;
     Item currentItem = null;
+    private SwitchCompat mSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +75,28 @@ public class AddActivity extends AppCompatActivity implements TimePickerDialog.O
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_add_edit, menu);
+        if (!isEditing) {
+            menu.findItem(R.id.action_switch).setVisible(false);
+            return true;
+        }
+        menu.findItem(R.id.action_switch).setActionView(R.layout.toolbar_switch);
+        mSwitch = menu.findItem(R.id.action_switch).getActionView().findViewById(R.id.switch_toolbar);
+        if (currentItem.getStatus() == Item.STATE_ACTIVE)
+            mSwitch.setChecked(false);
+        else
+            mSwitch.setChecked(true);
+        mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (currentItem == null)
+                    return;
+                if (isChecked) {
+                    currentItem.setStatus(Item.STATE_DONE);
+                } else {
+                    currentItem.setStatus(Item.STATE_ACTIVE);
+                }
+            }
+        });
         return true;
     }
 

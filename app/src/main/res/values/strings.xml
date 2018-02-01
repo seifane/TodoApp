@@ -9,4 +9,5 @@
     <string name="hint_time">Time</string>
     <string name="action_delete">Delete</string>
     <string name="action_delete_prompt">Do you really want to delete this note ?</string>
+    <string name="notification_set_done">Set As Done</string>
 </resources>
