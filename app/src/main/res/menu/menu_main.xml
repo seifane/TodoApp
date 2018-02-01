@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="ch.idoucha.todolist.MainActivity">
     <item
+        android:id="@+id/action_switch"
+        android:title=""
+        app:showAsAction="always"
+        android:actionLayout="@layout/toolbar_switch_main"/>
+
+    <item
         android:id="@+id/action_flush"
         android:orderInCategory="100"
         android:title="@string/action_flush"

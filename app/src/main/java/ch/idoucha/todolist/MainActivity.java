@@ -2,6 +2,7 @@ package ch.idoucha.todolist;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -14,6 +15,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.polyak.iconswitch.IconSwitch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     @BindView(R.id.fab)
     FloatingActionButton fab;
+
+    private IconSwitch mSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +71,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mAdapter.setList(mHelper.getAllItems());
+        mAdapter.setList(mHelper.getAllActiveItems());
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        menu.findItem(R.id.action_switch).setActionView(R.layout.toolbar_switch_main);
+        mSwitch = menu.findItem(R.id.action_switch).getActionView().findViewById(R.id.switch_toolbar);
+        mSwitch.setChecked(IconSwitch.Checked.LEFT);
+        mSwitch.setCheckedChangeListener(new IconSwitch.CheckedChangeListener() {
+            @Override
+            public void onCheckChanged(IconSwitch.Checked current) {
+                if (current == IconSwitch.Checked.RIGHT) {
+                    mAdapter.setList(mHelper.getAllDoneItems());
+                } else {
+                    mAdapter.setList(mHelper.getAllActiveItems());
+                }
+            }
+        });
         return true;
     }
 

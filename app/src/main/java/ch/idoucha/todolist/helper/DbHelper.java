@@ -51,6 +51,32 @@ public class DbHelper {
         return items;
     }
 
+    public List<Item> getAllActiveItems() {
+        PultusORMCondition condition = new PultusORMCondition.Builder()
+                .eq("status", Item.STATE_ACTIVE)
+                .sort("id", PultusORMQuery.Sort.DESCENDING)
+                .build();
+        List<Object> tmp = mOrm.find(new Item(), condition);
+        List<Item> items = new ArrayList<>();
+        for (Object o : tmp) {
+            items.add((Item) o);
+        }
+        return items;
+    }
+
+    public List<Item> getAllDoneItems() {
+        PultusORMCondition condition = new PultusORMCondition.Builder()
+                .eq("status", Item.STATE_DONE)
+                .sort("id", PultusORMQuery.Sort.DESCENDING)
+                .build();
+        List<Object> tmp = mOrm.find(new Item(), condition);
+        List<Item> items = new ArrayList<>();
+        for (Object o : tmp) {
+            items.add((Item) o);
+        }
+        return items;
+    }
+
     public boolean addItem(Context context, Item item) {
         boolean res = mOrm.save(item);
         if (res) {

@@ -18,6 +18,7 @@ import android.widget.Switch;
 
 import com.github.thunder413.datetimeutils.DateTimeStyle;
 import com.github.thunder413.datetimeutils.DateTimeUtils;
+import com.polyak.iconswitch.IconSwitch;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
@@ -54,7 +55,7 @@ public class AddActivity extends AppCompatActivity implements TimePickerDialog.O
     boolean isDateSet = false, isTimeSet = false, isEditing = false;
     int currentId = -1;
     Item currentItem = null;
-    private SwitchCompat mSwitch;
+    private IconSwitch mSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,15 +83,15 @@ public class AddActivity extends AppCompatActivity implements TimePickerDialog.O
         menu.findItem(R.id.action_switch).setActionView(R.layout.toolbar_switch);
         mSwitch = menu.findItem(R.id.action_switch).getActionView().findViewById(R.id.switch_toolbar);
         if (currentItem.getStatus() == Item.STATE_ACTIVE)
-            mSwitch.setChecked(false);
+            mSwitch.setChecked(IconSwitch.Checked.LEFT);
         else
-            mSwitch.setChecked(true);
-        mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            mSwitch.setChecked(IconSwitch.Checked.RIGHT);
+        mSwitch.setCheckedChangeListener(new IconSwitch.CheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheckChanged(IconSwitch.Checked current) {
                 if (currentItem == null)
                     return;
-                if (isChecked) {
+                if (current == IconSwitch.Checked.RIGHT) {
                     currentItem.setStatus(Item.STATE_DONE);
                 } else {
                     currentItem.setStatus(Item.STATE_ACTIVE);
